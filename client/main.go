@@ -18,7 +18,6 @@ func controlHandler( w http.ResponseWriter, r *http.Request, conn net.Conn ) {
 }
 
 func sendCommand( conn net.Conn, command int ) {
-  fmt.Println("sendCommand!")
   fmt.Fprintf( conn, strconv.Itoa( command ) )
 }
 
