@@ -1,0 +1,57 @@
+<!doctype html>
+<head>
+
+  <meta charset="utf-8" />
+
+  <style>
+
+    body {
+      text-align: center;
+      font-size: 3em;
+      font-weight: bold;
+    }
+
+    #control-wrapper {
+      margin: 8% auto 8% auto;
+      background-color: #f0f0f0;
+      width: 14%;
+      padding:30px;
+      border-radius:100px;
+      -webkit-border-radius: 100px;
+      -moz-border-radius: 100px;
+    }
+
+    a, a:visited {
+      text-decoration: none;
+      color: #000000;
+    }
+
+  </style>
+
+  <title>Control</title>
+
+</head>
+<body>
+
+  <div id="control-wrapper">
+    <a href="/accelerate">△</a><br />
+    <a href="/left">◁</a>
+    &nbsp;
+    <a href="/right"> ▷</a><br/>
+    <a href="/reverse">▽</a>
+  </div>
+
+  <script>
+    window.onload=function() {
+      var links = document.getElementsByTagName('a');
+      var i = 0;
+      while( i < links.length ) {
+        link = links.item( i );
+        link.href += "?" + Date.now();
+        i++;
+      };
+    };
+  </script>
+
+</body>
+</html>
