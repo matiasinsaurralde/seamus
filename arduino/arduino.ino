@@ -9,17 +9,40 @@ IPAddress ip(192, 168, 1, 200);
 EthernetServer server(9000);
 boolean isConnected = false;
 
+int accelerateP = 7;
+int reverseP = 6;
+int turnLeftP = 5;
+int turnRightP = 4;
+
+
 void setup() {
 
   Ethernet.begin( mac, ip );
 
   server.begin();
 
+  pinMode( accelerateP, OUTPUT );
+  digitalWrite (accelerateP, HIGH );
+  pinMode( reverseP, OUTPUT );
+  digitalWrite( reverseP, HIGH );
+
+  pinMode( turnLeftP, OUTPUT );
+  digitalWrite( turnLeftP, HIGH );
+  pinMode( turnRightP, OUTPUT );
+  digitalWrite( turnRightP, HIGH );
+
   Serial.begin(9600);
   
 }
 
+void drive( int action, int time = 1000 ) {
+  digitalWrite( action, LOW );
+  delay( time );
+  digitalWrite( action, HIGH );
+};
+
 void loop() {
+  
   EthernetClient client = server.available();
   
   if (client) {
