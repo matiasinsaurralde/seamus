@@ -1,5 +1,6 @@
 #include <SPI.h>
 #include <Ethernet.h>
+#define BUFSIZ 7
 
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
@@ -43,20 +44,39 @@ void drive( int action, int time = 1000 ) {
 
 void loop() {
   
+  char recvLine[BUFSIZ];
+  int index = 0;
+  
   EthernetClient client = server.available();
   
   if (client) {
-    if( !isConnected ) {
-      client.flush();
-      client.println("SEAMUS");
-      isConnected = true;
-    };
     
-    if( client.available() > 0 ) {
-      char option = client.read();
-      Serial.write("selecciono: ");
-      Serial.write( option );
-      Serial.write("\n");
+    index = 0;
+    
+    while( client.connected() ) {
+      if( client.available() ) {
+        char c = client.read();
+        
+        if ( c != '\n' && c != '\r' ) {
+          recvLine[ index ] = c;
+          index++;
+          
+          if( index >= BUFSIZ )
+            index = BUFSIZ -1;
+          continue;
+        };
+        
+        recvLine[ index ] = 0;
+        
+        char actionStr[2] = { recvLine[0], '\0' };
+        char delayTimeStr[ 5 ] = { recvLine[2], recvLine[3], recvLine[4], recvLine[5], '\0' };
+        int action = atol( actionStr );
+        int delayTime = atol( delayTimeStr );
+        
+        drive( action, delayTime );
+              
+        break;
+      };
     };
 
   }
